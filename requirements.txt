@@ -1,4 +1,2 @@
 fastapi
 uvicorn
-aiogram==3.21.0
-aiosqlite==0.21.0
