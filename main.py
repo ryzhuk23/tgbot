@@ -5,9 +5,10 @@ from aiogram.filters import Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.exceptions import TelegramBadRequest
 import aiosqlite
+import os
 
-API_TOKEN = '8085303818:AAE1G-ekS5pWFqdTIR0eibXCMoWYNs77RaU'
-CHANNEL_ID = '@your_channel_4'
+API_TOKEN = os.getenv('API_TOKEN', '8085303818:AAE1G-ekS5pWFqdTIR0eibXCMoWYNs77RaU')  # Лучше задать через переменные окружения
+CHANNEL_ID = os.getenv('CHANNEL_ID', '@your_channel_4')  # Лучше задать через переменные окружения
 DB_PATH = "users.db"
 
 bot = Bot(token=API_TOKEN)
@@ -159,5 +160,5 @@ async def root():
 @app.on_event("startup")
 async def on_startup():
     await init_db()
-    loop = asyncio.get_event_loop()
-    loop.create_task(dp.start_polling(bot))
+    # aiogram polling запускается в отдельной задаче, не блокируя FastAPI
+    asyncio.create_task(dp.start_polling(bot))
